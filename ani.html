@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animation Example</title>
+    <style>
+      .box {
+        width: 100px;
+        height: 100px;
+        background-color: blue;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .box2 {
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">Interval Animation</div>
+    <div class="box2">RequestAnimationFrame Animation</div>
+
+    <script>
+      // Interval Animation
+      let angle = 0;
+      const intervalBox = document.querySelector(".box");
+
+      function animateWithInterval() {
+        intervalBox.style.transform = `rotate(${angle}deg)`;
+        angle += 8;
+      }
+
+      setInterval(animateWithInterval, 30);
+
+      // RequestAnimationFrame Animation
+      let animationFrameAngle = 0;
+      const animationFrameBox = document.querySelector(".box2");
+
+      function animateWithAnimationFrame() {
+        animationFrameBox.style.transform = `rotate(${animationFrameAngle}deg)`;
+        animationFrameAngle += 6;
+        requestAnimationFrame(animateWithAnimationFrame);
+      }
+
+      animateWithAnimationFrame();
+
+      let previousTime;
+
+      function animateWithAnimationFrameQ(timestamp) {
+        if (!previousTime) {
+          previousTime = timestamp;
+        }
+
+        const elapsedTime = timestamp - previousTime;
+        console.log(elapsedTime);
+
+        previousTime = timestamp;
+
+        // Resto de la lógica de la animación...
+        // (Rotación de la caja, etc.)
+
+        requestAnimationFrame(animateWithAnimationFrameQ);
+      }
+
+      requestAnimationFrame(animateWithAnimationFrameQ);
+    </script>
+  </body>
+</html>

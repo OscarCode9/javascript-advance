@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smooth Scroll to Top</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+      }
+
+      #content {
+        height: 2000px; /* Simulación de contenido largo */
+      }
+
+      #backToTopBtn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="content">
+      <!-- Contenido largo simulado -->
+    </div>
+    <button id="backToTopBtn">Back to Top</button>
+
+    <script>
+      // Selecciona el botón "Back to Top"
+      const backToTopBtn = document.querySelector("#backToTopBtn");
+
+      // Agrega un event listener para el evento de clic en el botón
+      backToTopBtn.addEventListener("click", smoothScrollToTop);
+
+      // Define la función smoothScrollToTop
+      function smoothScrollToTop() {
+        // Declara la función animateScroll
+        function animateScroll(timestamp) {
+          // Calcula la duración de la animación (1000ms = 1 segundo)
+          const duration = 1000;
+
+          // Obtiene la posición vertical actual del desplazamiento
+          const start = document.documentElement.scrollTop;
+
+          // Establece el tiempo inicial de la animación
+          let startTime = null;
+
+          // Declara la función de animación
+          function scrollStep(timestamp) {
+            if (!startTime) startTime = timestamp;
+            console.log("timestamp", timestamp);
+            console.log("startTime", startTime);
+            console.log( timestamp - startTime);
+            const timeElapsed = timestamp - startTime;
+
+            // Calcula el progreso de la animación
+            const progress = Math.min(timeElapsed / duration, 1);
+
+            // Calcula la nueva posición del desplazamiento
+            const newPosition = start * (1 - progress);
+
+            // Actualiza la posición del desplazamiento
+            window.scrollTo(0, newPosition);
+
+            // Verifica si la animación ha terminado
+            if (timeElapsed < duration) {
+              // Sigue animando
+              requestAnimationFrame(scrollStep);
+            }
+          }
+
+          // Inicia la animación
+          requestAnimationFrame(scrollStep);
+        }
+
+        // Llama a la función animateScroll utilizando Requestanimationframe
+        requestAnimationFrame(animateScroll);
+      }
+    </script>
+  </body>
+</html>
